@@ -1,8 +1,29 @@
-import React from 'react'
+import React, { useEffect,useState } from 'react'
 import './featured.scss';
 import { InfoOutlined, PlayArrow } from '@mui/icons-material';
+import axios from 'axios';
 
 const Featured = ({type}) => {
+  const [content,setContent]=useState({});
+
+  useEffect(()=>{
+    const getRandomContent=async ()=>{
+      try{
+        const res=await axios.get(`movie/random?type=${type}`,
+        {
+          headers:{
+            token:process.env.REACT_APP_TOKEN
+          }
+        });
+        setContent(res.data[0]);
+      }catch(err){
+        console.log(err);
+      }
+    }
+    
+    getRandomContent();
+  },[type]);
+
   return (
     <div className='featured'>
       {type && (
@@ -26,16 +47,16 @@ const Featured = ({type}) => {
       
         <img
             width="100%"
-            src="https://4kwallpapers.com/images/walls/thumbs_3t/6967.jpg"
+            src={content.img}
             alt=""
           />
         <div className="info">
-        <img
-          src="https://occ-0-1432-1433.1.nflxso.net/dnm/api/v6/LmEnxtiAuzezXBjYXPuDgfZ4zZQ/AAAABUZdeG1DrMstq-YKHZ-dA-cx2uQN_YbCYx7RABDk0y7F8ZK6nzgCz4bp5qJVgMizPbVpIvXrd4xMBQAuNe0xmuW2WjoeGMDn1cFO.webp?r=df1"
+        {/* <img
+          src={content.imgTitle}
           alt=""
-        />
+        /> */}
         <span className='desc'>
-        It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.
+        {content.desc}
         </span>
         <div className="buttons">
           <button className='play'>
