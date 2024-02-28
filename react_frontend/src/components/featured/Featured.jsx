@@ -3,8 +3,15 @@ import './featured.scss';
 import { InfoOutlined, PlayArrow } from '@mui/icons-material';
 import axios from 'axios';
 
-const Featured = ({type}) => {
+const Featured = ({type,onGenreChange}) => {
   const [content,setContent]=useState({});
+  const [selectedGenre, setSelectedGenre] = useState(null);
+
+  const handleSelectedGenre=(val)=>{
+    const genre = val.target.value === 'null' ? null : val.target.value;
+    setSelectedGenre(genre);
+    onGenreChange(genre);
+  }
 
   useEffect(()=>{
     const getRandomContent=async ()=>{
@@ -15,6 +22,7 @@ const Featured = ({type}) => {
             token:process.env.REACT_APP_TOKEN
           }
         });
+        
         setContent(res.data[0]);
       }catch(err){
         console.log(err);
@@ -30,17 +38,17 @@ const Featured = ({type}) => {
         <div className="category">
           
           <span>{type === "movies" ? 'Movies' : 'Series'}</span>
-          <select name="genre" id="genre">
-            <option value="Genre">Genre</option>
-            <option value="Action">Action</option>
-            <option value="Adventure">Adventure</option>
-            <option value="Comedy">Comedy</option>
-            <option value="Crime">Crime</option>
-            <option value="Drama">Drama</option>
-            <option value="Fantasy">Fantasy</option>
-            <option value="Horror">Horror</option>
-            <option value="Romance">Romance</option>
-            <option value="Thriller">Thriller</option>
+          <select name="genre" id="genre" onChange={handleSelectedGenre} >
+            <option value="null">Genre</option>
+            <option value="action">Action</option>
+            <option value="adventure">Adventure</option>
+            <option value="comedy">Comedy</option>
+            <option value="crime">Crime</option>
+            <option value="drama">Drama</option>
+            <option value="fantasy">Fantasy</option>
+            <option value="horror">Horror</option>
+            <option value="romance">Romance</option>
+            <option value="thriller">Thriller</option>
           </select>
         </div>
       )}

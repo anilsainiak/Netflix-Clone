@@ -9,6 +9,11 @@ import env from "react-dotenv";
 const Home = ({type}) => {
   const [lists,setLists]= useState([]);
   const [genre,setGenre]= useState(null);
+
+  const handleGenreChange=(selectedGenre)=>{
+    setGenre(selectedGenre);
+  }
+
   useEffect(()=>{
     const getRandomLists=async ()=>{
       try{
@@ -29,7 +34,7 @@ const Home = ({type}) => {
   return (
     <div className='home'>
       <Navbar />
-      <Featured type={type}/>
+      <Featured type={type} onGenreChange={handleGenreChange}/>
       {lists.map((list)=>(
         <List key={list._id} list={list}/> 
       ))}
